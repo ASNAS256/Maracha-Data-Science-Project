@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+      background-image: url("{{ url_for('static', filename='aut.png') }}");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+</style>
+    <h2 class="mt-5" style="color:aliceblue">Login</h2>
+    <form method="post" action="{{ url_for('login') }}" class="mt-3">
+        {{ form.csrf_token }}
+        <div class="mb-3">
+            {{ form.username.label }} {{ form.username(class='form-control', required=true) }}
+            {% for error in form.username.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.password.label }} {{ form.password(class='form-control', required=true) }}
+            {% for error in form.password.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <input type="submit" value="Login" class="btn btn-primary custom-btn">
+    </form>
+{% endblock %}
+
+{% block additional_css %}
+    {% if is_login_page %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    {% endif %}
+{% endblock %}

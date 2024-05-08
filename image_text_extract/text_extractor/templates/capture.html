@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        Webcam Preview
+                    </div>
+                    <div class="card-body">
+                        <div id="camera"></div>
+                        <button class="btn btn-primary mt-3" onclick="take_snapshot()">Take Snapshot</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        Captured Image
+                    </div>
+                    <div class="card-body">
+                        <div id="results"></div>
+                        <!-- Add a button to save the image and trigger form submission -->
+                        <button id="saveImageButton" class="btn btn-success mt-3" style="display: none;" onclick="save_image()">Save Image</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form id="uploadForm" method="POST" enctype="multipart/form-data" class="hidden-form">
+        {{ form.hidden_tag() }}
+        <input type="hidden" name="image_data" id="image_data">
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+    <script>
+        // Load our web cam and configure it
+        Webcam.set({
+            width: 350,
+            height: 350,
+            image_format: 'jpeg',
+            jpeg_quality: 90,
+            force_flash: false,
+        });
+        Webcam.attach("#camera");
+
+        // Define the take_snapshot function
+        function take_snapshot() {
+            Webcam.snap(function(data_uri){
+                // Set the captured image to the 'results' div
+                document.getElementById("results").innerHTML = '<img src="' + data_uri + '"/>';
+
+                // Set the captured image data to the hidden input
+                document.getElementById("image_data").value = data_uri;
+
+                // Show the "Save Image" button after taking a snapshot
+                document.getElementById("saveImageButton").style.display = "block";
+            });
+        }
+
+        // Define the save_image function to trigger form submission
+        function save_image() {
+            // Submit the hidden form
+            document.getElementById("uploadForm").submit();
+        }
+    </script>
+{% endblock %}
