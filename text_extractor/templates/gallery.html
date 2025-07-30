@@ -1,0 +1,83 @@
+{% extends 'ittbase.html' %}
+{% block content %}
+
+<h2 style="color: white;">Gallery</h2>
+<div class="row">
+  {% if image_files %}
+    {% for image_file in image_files %}
+      <div class="col-md-4">
+        <div class="image-container img-border">
+          <h6 class="title">File name: {{ image_file.filename }}</h6><hr/>
+          <img src="{{ url_for('static', filename='uploads/' + image_file.filename) }}" alt="{{ image_file.filename }}" class="img-fluid" style="cursor: pointer; width: 100%;" onclick="viewImage('{{ url_for('static', filename='uploads/' + image_file.filename) }}')">
+          <form method="POST" action="{{ url_for('gallery') }}">
+            {{ form.csrf_token }}
+            {{ form.image_name(class="form-control", type="hidden", value=image_file.id) }}
+            {{ form.submit(class="btn btn-primary btn-extract") }}
+          </form>
+          <div class="handwritten-segments">
+            {% if hand_written_segments and image_name == image_file.filename %}
+              <h6 class="title">Extracted Data:</h6>
+              <textarea id="segments-textarea-{{ image_file.id }}" class="form-control" rows="10">{{ hand_written_segments }}</textarea>
+              <button class="btn btn-primary btn-save btn-extract mt-2" onclick="promptAndSaveSegments('{{ image_file.id }}', '{{ image_file.filename }}')">Save to Text File</button>
+              <button class="btn btn-primary btn-save btn-extract mt-2" onclick="printText('{{ image_file.id }}')">Print Text</button>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% if loop.index % 3 == 0 %}
+        </div>
+        <div class="row">
+      {% endif %}
+    {% endfor %}
+  {% else %}
+    <h4 style="color: burlywood;">No images found!!</h4>
+  {% endif %}
+</div>
+
+<script>
+  function viewImage(imageUrl) {
+    var popupWindow = window.open(imageUrl, '_blank');
+    popupWindow.focus();
+  }
+
+  function formatSegments(segmentsContent) {
+    var lines = segmentsContent.split('\n');
+    for (var i = 0; i < lines.length; i++) {
+      lines[i] = lines[i].trim();
+    }
+    return lines.join('\n');
+  }
+
+  function promptAndSaveSegments(imageId, filename) {
+    var segmentsContent = document.getElementById('segments-textarea-' + imageId).value;
+    var formattedSegments = formatSegments(segmentsContent);
+    var blob = new Blob([formattedSegments], { type: 'text/plain' });
+
+    var defaultFilename = 'extracted' + filename.replace(/\.[^/.]+$/, "") + '.txt';
+    var userFilename = prompt("Save as:", defaultFilename);
+    
+    if (userFilename !== null && userFilename.trim() !== '') {
+      var a = document.createElement('a');
+      a.href = window.URL.createObjectURL(blob);
+      a.download = userFilename.trim();
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  }
+
+  function printText(imageId) {
+    var segmentsContent = document.getElementById('segments-textarea-' + imageId).value;
+    var printWindow = window.open('', '', 'width=600,height=600');
+    printWindow.document.open();
+    printWindow.document.write('<html><head><title>Print Text</title></head><body>');
+    printWindow.document.write('<pre>' + segmentsContent + '</pre>');
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+    printWindow.close();
+  }
+</script>
+
+{% endblock %}

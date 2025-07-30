@@ -1,0 +1,36 @@
+
+{% extends "ehr.html" %}
+{% block content %}
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<h1 class="my-4" style="text-align: center;">Referral Note</h1>
+<div>
+    <p><strong>Date of Referral:</strong> {{ report.date_of_referral }}</p>
+    <p><strong>To:</strong> {{ report.to }}</p>
+    <p><strong>From Health Unit:</strong> {{ report.from_health_unit }}</p>
+    <p><strong>Referral Number:</strong> {{ report.referral_number }}</p>
+    <p><strong>Patient Name:</strong> {{ report.reference_patient_name }}</p>
+    <p><strong>Patient Number:</strong> {{ report.patient_number }}</p>
+    <p><strong>Age:</strong> {{ report.age }}</p>
+    <p><strong>Sex:</strong> {{ report.sex }}</p>
+    <p><strong>Date of First Visit:</strong> {{ report.date_of_first_visit }}</p>
+    <p><strong>History and Symptoms:</strong> {{ report.history_and_symptoms }}</p>
+    <p><strong>Investigations Done:</strong> {{ report.investigations_done }}</p>
+    <p><strong>Diagnosis:</strong> {{ report.diagnosis }}</p>
+    <p><strong>Treatment Given:</strong> {{ report.treatment_given }}</p>
+    <p><strong>Reason for Referral:</strong> {{ report.reason_for_referral }}</p>
+    <p><strong>Clinician Name:</strong> {{ report.clinician_name }}</p>
+    <p><strong>Clinician Contact:</strong> {{ report.clinician_contact }}</p>
+    <p><strong>Date of Arrival:</strong> {{ report.date_of_arrival }}</p>
+    <p><strong>Date of Discharge:</strong> {{ report.date_of_discharge }}</p>
+    <p><strong>Further Investigations Done:</strong> {{ report.further_investigations_done }}</p>
+    <p><strong>Further Diagnosis:</strong> {{ report.further_diagnosis }}</p>
+    <p><strong>Further Treatments Given:</strong> {{ report.further_treatments_given }}</p>
+    <p><strong>Treatment or Surveillance to be Continued:</strong> {{ report.treatment_or_surveillance }}</p>
+    <p><strong>Remarks:</strong> {{ report.remarks }}</p>
+    <p><strong>Further Clinician Name:</strong> {{ report.further_clinician_name }}</p>
+    <p><strong>Further Clinician Contact:</strong> {{ report.further_clinician_contact }}</p>
+    <button onclick="window.print()" class="btn btn-primary no-print">Print</button>
+</div>
+
+{% endblock %}

@@ -1,0 +1,268 @@
+{% extends "ehr.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h1>Health Records</h1>
+
+    <style>
+        .upload-date {
+            color: #85C1E9; /* Light blue color */
+            font-size: 0.9em;
+            font-style: italic;
+        }
+        .ward-label {
+            color: #5DADE2; /* Light blue color */
+            font-size: 0.9em;
+            font-style: italic;
+            margin-left: 10px;
+        }
+        .search-form {
+            background-color: #3e63dd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .search-input {
+            width: calc(100% - 110px);
+            display: inline-block;
+        }
+        .search-button {
+            float: right;
+            width: 100px;
+            background-color: #5f6c79; /* Default blue background color */
+            border-color: #747c85; /* Frame color */
+        }
+        .sort-form {
+            background-color: #6d7d8d; /* Light grey color */
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #7f8e9e; /* Slightly darker border */
+        }
+        .sort-input {
+            width: calc(20% - 15px);
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .sort-button {
+            float: right;
+            width: 100px;
+            background-color: #34495E; /* Green background color */
+            border-color: #34495E; /* Green border color */
+        }
+    </style>
+
+    <!-- Search Form -->
+    <form method="get" action="{{ url_for('health_records') }}" class="search-form">
+        <div class="form-group">
+            <input type="text" name="search_query" class="form-control search-input" placeholder="Search by file name or date" value="{{ search_query }}">
+            <button type="submit" class="btn btn-primary search-button">Search</button>
+        </div>
+    </form>
+
+    <!-- Sort Form -->
+    <form method="get" action="{{ url_for('health_records') }}" class="sort-form">
+        <input type="hidden" name="search_query" value="{{ search_query }}">
+        <div class="form-group">
+            <label for="sort_by">Sort By:</label>
+            <select name="sort_by" id="sort_by" class="form-control sort-input">
+                <option value="filename" {% if sort_by == 'filename' %}selected{% endif %}>File Name</option>
+                <option value="upload_date" {% if sort_by == 'upload_date' %}selected{% endif %}>Upload Date</option>
+                <option value="file_type" {% if sort_by == 'file_type' %}selected{% endif %}>File Type</option>
+            </select>
+            <label for="sort_order">Order:</label>
+            <select name="sort_order" id="sort_order" class="form-control sort-input">
+                <option value="asc" {% if sort_order == 'asc' %}selected{% endif %}>Ascending</option>
+                <option value="desc" {% if sort_order == 'desc' %}selected{% endif %}>Descending</option>
+            </select>
+            <label for="ward">Ward:</label>
+            <select name="ward" id="ward" class="form-control sort-input">
+                <option value="all" {% if ward == 'all' %}selected{% endif %}>All</option>
+                <option value="maternity" {% if ward == 'maternity' %}selected{% endif %}>Maternity</option>
+                <option value="surgical" {% if ward == 'surgical' %}selected{% endif %}>Surgical</option>
+                <option value="opm" {% if ward == 'opm' %}selected{% endif %}>OPM</option>
+            </select>
+            <button type="submit" class="btn btn-success sort-button">Sort</button>
+        </div>
+    </form>
+
+    <!-- Original Data Section -->
+    <div class="card mb-4">
+        <div class="card-header">Original Data</div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data" action="{{ url_for('health_records') }}">
+                {{ original_form.hidden_tag() }}
+                <div class="form-group">
+                    {{ original_form.file.label }} {{ original_form.file(class="form-control", multiple=True) }}
+                </div>
+                <div class="form-group">
+                    {{ original_form.ward.label }} {{ original_form.ward(class="form-control") }}
+                </div>
+                <button type="submit" class="btn btn-primary">Upload Original Data</button>
+            </form>
+            <h3 class="mt-4">Uploaded Original Data</h3>
+            <ul class="list-group">
+                {% for file in original_files %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        {{ file.filename }}
+                        <small class="upload-date">Uploaded on: {{ file.upload_date.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                        {% if file.ward %}
+                            <small class="ward-label">{{ file.ward.capitalize() }} Ward</small>
+                        {% endif %}
+                    </div>
+                    <span>
+                        <a href="{{ url_for('uploaded_file', filename=file.filename) }}" target="_blank" class="btn btn-sm btn-info">View</a>
+                        <a href="{{ url_for('print_file', filename=file.filename) }}" class="btn btn-sm btn-secondary">Print</a>
+                        <button class="btn btn-sm btn-danger delete-file-btn" data-filename="{{ file.filename }}">Delete</button>
+                        <a href="{{ url_for('download_file', filename=file.filename) }}" class="btn btn-sm btn-primary">Download</a>
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Extracted Data Section -->
+    <div class="card mb-4">
+        <div class="card-header">Extracted Data</div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data" action="{{ url_for('health_records') }}">
+                {{ extracted_form.hidden_tag() }}
+                <div class="form-group">
+                    {{ extracted_form.file.label }} {{ extracted_form.file(class="form-control", multiple=True) }}
+                </div>
+                <div class="form-group">
+                    {{ extracted_form.ward.label }} {{ extracted_form.ward(class="form-control") }}
+                </div>
+                <button type="submit" class="btn btn-primary">Upload Extracted Data</button>
+            </form>
+            <h3 class="mt-4">Uploaded Extracted Data</h3>
+            <ul class="list-group">
+                {% for file in extracted_files %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        {{ file.filename }}
+                        <small class="upload-date">Uploaded on: {{ file.upload_date.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                        {% if file.ward %}
+                            <small class="ward-label">{{ file.ward.capitalize() }} Ward</small>
+                        {% endif %}
+                    </div>
+                    <span>
+                        <a href="{{ url_for('uploaded_file', filename=file.filename) }}" target="_blank" class="btn btn-sm btn-info">View</a>
+                        <a href="{{ url_for('print_file', filename=file.filename) }}" class="btn btn-sm btn-secondary">Print</a>
+                        <button class="btn btn-sm btn-danger delete-file-btn" data-filename="{{ file.filename }}">Delete</button>
+                        <a href="{{ url_for('download_file', filename=file.filename) }}" class="btn btn-sm btn-primary">Download</a>
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Other Images Section -->
+    <div class="card mb-4">
+        <div class="card-header">Other Images</div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data" action="{{ url_for('health_records') }}">
+                {{ other_images_form.hidden_tag() }}
+                <div class="form-group">
+                    {{ other_images_form.file.label }} {{ other_images_form.file(class="form-control", multiple=True) }}
+                </div>
+                <div class="form-group">
+                    {{ other_images_form.ward.label }} {{ other_images_form.ward(class="form-control") }}
+                </div>
+                <button type="submit" class="btn btn-primary">Upload Other Images</button>
+            </form>
+            <h3 class="mt-4">Uploaded Other Images</h3>
+            <ul class="list-group">
+                {% for file in other_images %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        {{ file.filename }}
+                        <small class="upload-date">Uploaded on: {{ file.upload_date.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                        {% if file.ward %}
+                            <small class="ward-label">{{ file.ward.capitalize() }} Ward</small>
+                        {% endif %}
+                    </div>
+                    <span>
+                        <a href="{{ url_for('uploaded_file', filename=file.filename) }}" target="_blank" class="btn btn-sm btn-info">View</a>
+                        <a href="{{ url_for('print_file', filename=file.filename) }}" class="btn btn-sm btn-secondary">Print</a>
+                        <button class="btn btn-sm btn-danger delete-file-btn" data-filename="{{ file.filename }}">Delete</button>
+                        <a href="{{ url_for('download_file', filename=file.filename) }}" class="btn btn-sm btn-primary">Download</a>
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Documents Section -->
+    <div class="card mb-4">
+        <div class="card-header">Digital Forms</div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data" action="{{ url_for('health_records') }}">
+                {{ documents_form.hidden_tag() }}
+                <div class="form-group">
+                    {{ documents_form.file.label }} {{ documents_form.file(class="form-control", multiple=True) }}
+                </div>
+                <div class="form-group">
+                    {{ documents_form.ward.label }} {{ documents_form.ward(class="form-control") }}
+                </div>
+                <button type="submit" class="btn btn-primary">Upload Digital Form</button>
+            </form>
+            <h3 class="mt-4">Uploaded Digital Forms</h3>
+            <ul class="list-group">
+                {% for file in documents %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        {{ file.filename }}
+                        <small class="upload-date">Uploaded on: {{ file.upload_date.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                        {% if file.ward %}
+                            <small class="ward-label">{{ file.ward.capitalize() }} Ward</small>
+                        {% endif %}
+                    </div>
+                    <span>
+                        <a href="{{ url_for('uploaded_file', filename=file.filename) }}" target="_blank" class="btn btn-sm btn-info">View</a>
+                        <a href="{{ url_for('print_file', filename=file.filename) }}" class="btn btn-sm btn-secondary">Print</a>
+                        <button class="btn btn-sm btn-danger delete-file-btn" data-filename="{{ file.filename }}">Delete</button>
+                        <a href="{{ url_for('download_file', filename=file.filename) }}" class="btn btn-sm btn-primary">Download</a>
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.delete-file-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const filename = this.getAttribute('data-filename');
+                const csrfToken = '{{ csrf_token() }}';  // Flask-WTF CSRF token
+
+                fetch(`/delete_file/${filename}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken  // Send the CSRF token in the header
+                    },
+                    body: JSON.stringify({ filename: filename })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        this.closest('li').remove();
+                        alert(data.message);
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}

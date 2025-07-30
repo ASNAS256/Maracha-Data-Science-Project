@@ -1,0 +1,196 @@
+{% extends "ehr.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Laboratory Request Form</h2>
+    <form method="POST" class="mb-4">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.sex.label(class="form-label") }}
+            {{ form.sex(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.age.label(class="form-label") }}
+            {{ form.age(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.ward.label(class="form-label") }}
+            {{ form.ward(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.material.label(class="form-label") }}
+            {{ form.material(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.time.label(class="form-label") }}
+            {{ form.time(class="form-control", type="time") }}
+        </div>
+        <div class="form-group">
+            {{ form.date.label(class="form-label") }}
+            {{ form.date(class="form-control", type="date") }}
+        </div>
+        <div class="form-group">
+            {{ form.ip_no.label(class="form-label") }}
+            {{ form.ip_no(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.examination_required.label(class="form-label") }}
+            {{ form.examination_required(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.clinical_notes.label(class="form-label") }}
+            {{ form.clinical_notes(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.rec_in_lab_time.label(class="form-label") }}
+            {{ form.rec_in_lab_time(class="form-control", type="time") }}
+        </div>
+        <div class="form-group">
+            {{ form.lab_no.label(class="form-label") }}
+            {{ form.lab_no(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.results.label(class="form-label") }}
+            {{ form.results(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.rec_by.label(class="form-label") }}
+            {{ form.rec_by(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.examined_by.label(class="form-label") }}
+            {{ form.examined_by(class="form-control") }}
+        </div>
+        {{ form.submit(class="btn btn-primary") }}
+    </form>
+
+    <h2>Submitted Forms</h2>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Sex</th>
+                <th>Date</th>
+                <th>IP No.</th>
+                <th>Lab No.</th>
+                <th>Rec. By</th>
+                <th>Examined By</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in lab_requests %}
+            <tr>
+                <td>{{ request.name }}</td>
+                <td>{{ request.sex }}</td>
+                <td>{{ request.date }}</td>
+                <td>{{ request.ip_no }}</td>
+                <td>{{ request.lab_no }}</td>
+                <td>{{ request.rec_by }}</td>
+                <td>{{ request.examined_by }}</td>
+                <td>
+                    <a href="{{ url_for('laboratory_request_form_detail', id=request.id) }}" class="btn btn-sm btn-warning">Edit</a>
+                    <form action="{{ url_for('laboratory_request_form_delete', id=request.id) }}" method="POST" style="display:inline;">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">Delete</button>
+                    </form>
+                    <button onclick="showPrintModal('{{ request.name }}', '{{ request.sex }}', '{{ request.age }}', '{{ request.ward }}', '{{ request.material }}', '{{ request.time }}', '{{ request.date }}', '{{ request.ip_no }}', '{{ request.examination_required }}', '{{ request.clinical_notes }}', '{{ request.rec_in_lab_time }}', '{{ request.lab_no }}', '{{ request.results }}', '{{ request.rec_by }}', '{{ request.examined_by }}')" class="btn btn-sm btn-secondary">Print</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Print Modal -->
+<div class="modal fade" id="printModal" tabindex="-1" role="dialog" aria-labelledby="printModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="printModalLabel">Print Laboratory Request</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="print-section">
+                <!-- Content will be dynamically filled by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="printRequest()">Print</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showPrintModal(name, sex, age, ward, material, time, date, ip_no, examination_required, clinical_notes, rec_in_lab_time, lab_no, results, rec_by, examined_by) {
+        // Populate the modal with request data
+        document.getElementById('print-section').innerHTML = `
+            <div style="text-align: center;">
+                <h4>ST. JOSEPH'S HOSPITAL MARACHA</h4>
+                <h5>P.O Box 59, Arua</h5>
+                <h4>LABORATORY REQUEST FORM</h4>
+            </div>
+            <p><strong>Name: </strong> ${name}</p>
+            <p><strong>Sex: </strong> ${sex}</p>
+            <p><strong>Age: </strong>${age}</p>
+            <p><strong>Ward: </strong>${ward}</p>
+            <p><strong>Material: </strong>${material}</p>
+            <p><strong>Time: </strong>${time}</p>
+            <p><strong>Date: </strong>${date}</p>
+            <p><strong>IP No: </strong>${ip_no}</p>
+            <p><strong>Examination Required: </strong>${examination_required}</p>
+            <p><strong>Clinical Notes: </strong>${clinical_notes}</p>
+            <p><strong>Rec. in Lab Time: </strong>${rec_in_lab_time}</p>
+            <p><strong>Lab No: </strong>${lab_no}</p>
+            <p><strong>Results: </strong>${results}</p>
+            <p><strong>Rec. By: </strong>${rec_by}</p>
+            <p><strong>Examined By: </strong>${examined_by}</p>
+        `;
+        $('#printModal').modal('show');
+    }
+
+    function printRequest() {
+        var printContents = document.getElementById('print-section').innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = `
+            <html>
+            <head>
+                <style>
+                    @media print {
+                        body {
+                            margin: 0;
+                            padding: 0;
+                        }
+                        .print-header {
+                            text-align: center;
+                        }
+                    }
+                </style>
+            </head>
+            <body>${printContents}</body>
+            </html>
+        `;
+        window.print();
+        document.body.innerHTML = originalContents;
+        location.reload(); // To reload the page after printing to restore the original content
+    }
+
+    // JavaScript to set default values for time and date fields
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const now = new Date();
+        const timeString = now.toTimeString().substring(0, 5);
+        const dateString = now.toISOString().substring(0, 10);
+
+        document.querySelector('input[name="time"]').value = timeString;
+        document.querySelector('input[name="date"]').value = dateString;
+        document.querySelector('input[name="rec_in_lab_time"]').value = timeString;
+    });
+</script>
+{% endblock %}

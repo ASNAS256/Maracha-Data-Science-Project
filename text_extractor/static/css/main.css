@@ -1,0 +1,96 @@
+.img-border {
+    border: 1px solid #ccc;
+    padding: 12px;
+    margin-top: 12px;
+}
+
+.btn-extract {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.title {
+    margin-top: 8px;
+}
+
+.custom-btn {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+#camera {
+    width: 350px;
+    height: 350px;
+    border: 1px solid black;
+}
+/* Add this to your main.css or a new CSS file */
+
+.edit-patient-form {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.edit-patient-form label {
+    font-weight: bold;
+}
+
+.edit-patient-form .form-control {
+    margin-bottom: 15px;
+}
+
+.edit-patient-form button {
+    margin-top: 20px;
+}
+.navbar-nav .nav-item {
+    margin-right: 15px; /* Adds space between items */
+}
+
+.navbar-nav .nav-link {
+    border: 2px solid white; /* Adds border to links */
+    border-radius: 5px; /* Rounds the corners */
+    padding: 5px 10px; /* Adds padding inside the border */
+    transition: background-color 0.3s, color 0.3s; /* Adds transition effect */
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: rgb(255, 255, 255); /* Changes background on hover */
+    color: black; /* Changes text color on hover */
+}
+
+.navbar-nav .dropdown-menu {
+    background-color: #2d90f3; /* Sets dropdown background */
+    border: 2px solid white; /* Adds border to dropdown */
+    border-radius: 5px; /* Rounds the corners */
+}
+
+.navbar-nav .dropdown-item {
+    background-color: cadetblue;
+    color: white; /* Sets text color for dropdown items */
+    border: 1px solid white; /* Adds border to dropdown items */
+    border-radius: 5px; /* Rounds the corners */
+    transition: background-color 0.3s, color 0.3s; /* Adds transition effect */
+}
+
+.navbar-nav .dropdown-item:hover {
+    background-color: white; /* Changes background on hover */
+    color: black; /* Changes text color on hover */
+}
+
+.navbar-nav .navbar-brand {
+    margin-right: 15px; /* Adds space between items */
+}
+
+.navbar-nav .navbar-brand {
+    border: 2px solid rgb(27, 96, 143); /* Adds border to links */
+    border-radius: 5px; /* Rounds the corners */
+    padding: 5px 10px; /* Adds padding inside the border */
+    transition: background-color 0.3s, color 0.3s; /* Adds transition effect */
+}
+
+.navbar-nav .navbar-brand:hover {
+    background-color: rgb(69, 122, 165); /* Changes background on hover */
+    color: black; /* Changes text color on hover */
+}
+

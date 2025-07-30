@@ -1,0 +1,136 @@
+{% extends "ehr.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Patient Information</h1>
+    <form method="post" action="{{ url_for('patient_information') }}" class="mb-5">
+        {{ form.hidden_tag() }}
+        
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.surname.label(class="form-label") }}
+                    {{ form.surname(class="form-control") }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.given_name.label(class="form-label") }}
+                    {{ form.given_name(class="form-control") }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.date_of_birth.label(class="form-label") }}
+                    {{ form.date_of_birth(class="form-control") }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.gender.label(class="form-label") }}
+                    {{ form.gender(class="form-select") }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.phone_number.label(class="form-label") }}
+                    {{ form.phone_number(class="form-control") }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-control") }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="form-group">
+                    {{ form.local_address.label(class="form-label") }}
+                    {{ form.local_address(class="form-control") }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="form-group">
+                    {{ form.emergency_contact.label(class="form-label") }}
+                    {{ form.emergency_contact(class="form-control") }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <div class="form-group">
+                    {{ form.village.label(class="form-label") }}
+                    {{ form.village(class="form-control") }}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    {{ form.parish.label(class="form-label") }}
+                    {{ form.parish(class="form-control") }}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    {{ form.sub_county.label(class="form-label") }}
+                    {{ form.sub_county(class="form-control") }}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    {{ form.district.label(class="form-label") }}
+                    {{ form.district(class="form-control") }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+
+    <h2 class="mb-4">Existing Patients</h2>
+    <ul class="list-group">
+        {% for patient in patients %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ patient.surname }} {{ patient.given_name }}
+            <div>
+                <a href="{{ url_for('patient_information_edit', patient_id=patient.id) }}" class="btn btn-secondary btn-sm">Edit</a>
+                <button class="btn btn-danger btn-sm" onclick="deletePatient({{ patient.id }})">Delete</button>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+<script>
+    function deletePatient(patientId) {
+        if (confirm('Are you sure you want to delete this patient?')) {
+            fetch(`/patient_information/delete/${patientId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ form.csrf_token._value() }}'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert('Error deleting patient.');
+                }
+            });
+        }
+    }
+</script>
+{% endblock %}

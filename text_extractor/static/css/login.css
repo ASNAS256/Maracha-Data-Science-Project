@@ -1,0 +1,7 @@
+/* login.css */
+body {
+  background-image: url("{{ url_for('static', filename='aut.png') }}");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}

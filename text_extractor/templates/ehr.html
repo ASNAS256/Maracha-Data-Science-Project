@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EHR</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            padding-top: 80px; /* Add padding to prevent content from being hidden behind the navbar */
+        }
+
+        .navbar-nav .nav-item {
+            margin-right: 15px; /* Adds space between items */
+        }
+
+        .navbar-nav .nav-link {
+            border: 2px solid white; /* Adds border to links */
+            border-radius: 5px; /* Rounds the corners */
+            padding: 5px 10px; /* Adds padding inside the border */
+            transition: background-color 0.3s, color 0.3s; /* Adds transition effect */
+        }
+
+        .navbar-nav .nav-link:hover {
+            background-color: white; /* Changes background on hover */
+            color: black; /* Changes text color on hover */
+        }
+
+        .navbar-nav .dropdown-menu {
+            background-color: #343a40; /* Sets dropdown background */
+            border: 2px solid white; /* Adds border to dropdown */
+            border-radius: 5px; /* Rounds the corners */
+        }
+
+        .navbar-nav .dropdown-item {
+            color: white; /* Sets text color for dropdown items */
+            border: 1px solid white; /* Adds border to dropdown items */
+            border-radius: 5px; /* Rounds the corners */
+            transition: background-color 0.3s, color 0.3s; /* Adds transition effect */
+        }
+
+        .navbar-nav .dropdown-item:hover {
+            background-color: white; /* Changes background on hover */
+            color: black; /* Changes text color on hover */
+        }
+
+        .navbar-nav.ms-auto {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{{ url_for('dashboard') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('patient_information') }}">Patient Information</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('health_records') }}">Health Records</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('analytics_reports') }}">Analytics & Reports</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="hospitalFormsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Hospital Forms
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="hospitalFormsDropdown">
+                            <li><a class="dropdown-item" href="{{ url_for('inpatient_treatment_sheet') }}">Inpatient Treatment Sheet</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('laboratory_request_form') }}">Laboratory Request Form</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('operation_report_view') }}">Operation Report</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('referral_note') }}">Referral Note</a></li>
+                            <!-- Add more forms here as needed -->
+                        </ul>
+                    </li> 
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{{ url_for('index') }}"> OCR </a>
+                    </li>                   
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('create_user') }}">Register</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Welcome text for the main page -->
+        {% if not current_user.is_authenticated %}
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome to Electronic Health Records</h1>
+            <p class="lead">Store and Access different health records and forms here.</p>
+            <hr class="my-4">
+            <p>Please log in to access your records.</p>
+            <a class="btn btn-primary btn-lg" href="{{ url_for('login') }}" role="button">Login</a>
+            <a class="btn btn-secondary btn-lg" href="{{ url_for('create_user') }}" role="button">Register</a>
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </div>
+    <div class="jumbotron">
+        <h1 class="display-4" style="text-align: center; display: block;">Welcome to Electronic Health Records</h1>
+        <p class="lead" style="text-align: center;">Store and Access your health Records and forms from here.</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

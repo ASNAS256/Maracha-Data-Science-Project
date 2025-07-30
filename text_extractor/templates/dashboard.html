@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="welcome-section" style="color: darkslategrey;">
+    <h1>Welcome to ST. Joseph's Hospital Medical Records</h1>
+    <p>Your health is our priority. Access your records securely and efficiently.</p>
+</div>
+
+<style>
+    .welcome-section {
+        background: linear-gradient url("{{ url_for('static', filename='better.jpeg') }}") center/cover no-repeat;
+        color: white;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        flex-direction: column;
+    }
+    .welcome-section h1 {
+        font-size: 3rem;
+        font-weight: bold;
+    }
+    .welcome-section p {
+        font-size: 1.5rem;
+        margin-top: 1rem;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2 class="mb-4">Upload an Image for OCR</h2>
+
+  <form method="POST" action="{{ url_for('advanced_ocr') }}" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+
+    <div class="mb-3">
+      {{ form.file.label(class="form-label h5") }}
+      {{ form.file(class="form-control", id="fileInput") }}
+      {% for error in form.file.errors %}
+        <div class="text-danger mt-1">{{ error }}</div>
+      {% endfor %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Extract Text</button>
+  </form>
+
+  {% if extracted_text %}
+    <hr>
+    <h4 class="mt-4">Extracted Text:</h4>
+    <pre class="bg-light p-3 border rounded">{{ extracted_text }}</pre>
+  {% endif %}
+
+  {% if image %}
+    <hr>
+    <h5>Uploaded Image:</h5>
+    <img src="{{ url_for('static', filename='uploads/' ~ image) }}" class="img-fluid mt-2 mb-4" alt="Uploaded image">
+  {% endif %}
+
+  {% if error %}
+    <div class="alert alert-danger mt-3">{{ error }}</div>
+  {% endif %}
+{% endblock %}

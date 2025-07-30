@@ -1,0 +1,57 @@
+{% extends "fbase.html" %}
+
+{% block content %}
+<style>
+    body {
+        background-image: url("{{ url_for('static', filename='gbi.jpg') }}");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+
+    .login-container {
+        max-width: 400px; /* Set the maximum width for the form */
+        background: rgba(255, 255, 255, 0.9); /* Add a slight white background */
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="login-container">
+        <h2 style="color: rgb(7, 39, 66);">Login</h2>
+        <form method="post" action="{{ url_for('login') }}">
+            {{ form.csrf_token }}
+            <div class="mb-3">
+                {{ form.username.label }} 
+                {{ form.username(class='form-control', required=true) }}
+                {% for error in form.username.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.password.label }} 
+                {{ form.password(class='form-control', required=true) }}
+                {% for error in form.password.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="d-grid">
+                <input type="submit" value="Login" class="btn btn-primary mb-2">
+            </div>
+        </form>
+        <!-- Styled Register Link -->
+        <div class="text-center mt-3">
+            <a href="{{ url_for('create_user') }}" class="btn btn-outline-secondary">
+                Don't have an account? <h style="color: dodgerblue;">Register</h>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

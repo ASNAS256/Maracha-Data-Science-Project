@@ -1,0 +1,28 @@
+{% extends "ehr.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Print Laboratory Request</h2>
+    <div>
+        <p><strong>Name:</strong> {{ request.name }}</p>
+        <p><strong>Sex:</strong> {{ request.sex }}</p>
+        <p><strong>Age:</strong> {{ request.age }}</p>
+        <p><strong>Ward:</strong> {{ request.ward }}</p>
+        <p><strong>Material:</strong> {{ request.material }}</p>
+        <p><strong>Time:</strong> {{ request.time }}</p>
+        <p><strong>Date:</strong> {{ request.date }}</p>
+        <p><strong>IP No:</strong> {{ request.ip_no }}</p>
+        <p><strong>Examination Required:</strong> {{ request.examination_required }}</p>
+        <p><strong>Clinical Notes:</strong> {{ request.clinical_notes }}</p>
+        <p><strong>Rec. in Lab Time:</strong> {{ request.rec_in_lab_time }}</p>
+        <p><strong>Lab No:</strong> {{ request.lab_no }}</p>
+        <p><strong>Results:</strong> {{ request.results }}</p>
+        <p><strong>Rec. By:</strong> {{ request.rec_by }}</p>
+        <p><strong>Examined By:</strong> {{ request.examined_by }}</p>
+    </div>
+    <div class="mt-4">
+        <button type="button" class="btn btn-secondary" onclick="window.close();">Close</button>
+        <button type="button" class="btn btn-primary" onclick="window.print();">Print</button>
+    </div>
+</div>
+{% endblock %}

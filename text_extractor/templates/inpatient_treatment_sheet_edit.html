@@ -1,0 +1,91 @@
+{% extends "ehr.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Edit Inpatient Treatment Sheet</h2>
+    <form method="POST" class="mb-4">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.ward.label(class="form-label") }}
+            {{ form.ward(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.bed_number.label(class="form-label") }}
+            {{ form.bed_number(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.inpatient_number.label(class="form-label") }}
+            {{ form.inpatient_number(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.address.label(class="form-label") }}
+            {{ form.address(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.age.label(class="form-label") }}
+            {{ form.age(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.sex.label(class="form-label") }}
+            {{ form.sex(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.next_of_kin.label(class="form-label") }}
+            {{ form.next_of_kin(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.admission_date.label(class="form-label") }}
+            {{ form.admission_date(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.admission_time.label(class="form-label") }}
+            {{ form.admission_time(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.referred_from.label(class="form-label") }}
+            {{ form.referred_from(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.discharge_date.label(class="form-label") }}
+            {{ form.discharge_date(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.discharge_status.label(class="form-label") }}
+            {{ form.discharge_status(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.final_diagnosis.label(class="form-label") }}
+            {{ form.final_diagnosis(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.surgical_procedure.label(class="form-label") }}
+            {{ form.surgical_procedure(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.follow_up_date.label(class="form-label") }}
+            {{ form.follow_up_date(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.follow_up_place.label(class="form-label") }}
+            {{ form.follow_up_place(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.treatment_instructions.label(class="form-label") }}
+            {{ form.treatment_instructions(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.clinical_notes.label(class="form-label") }}
+            {{ form.clinical_notes(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.provisional_diagnosis.label(class="form-label") }}
+            {{ form.provisional_diagnosis(class="form-control") }}
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "ittbase.html" %}
+
+{% block content %}
+<style>
+    .form-container {
+        max-width: 500px; /* Adjust the form width */
+        margin: 20 auto; /* Center the form horizontally */
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.95); /* Optional: Slight white background for clarity */
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for form */
+    }
+
+    .btn-extract {
+        margin-top: 10px; /* Add spacing above submit button */
+    }
+</style>
+
+<br/>
+<div class="form-container">
+    <form method="POST" action="{{ url_for('index') }}" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        <div class="mb-3">
+            {{ form.file.label(class="form-label h4") }}
+            {{ form.file(class="form-control", id="fileInput") }}
+            {% for error in form.file.errors %}
+                <span class="error text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="d-grid">
+            {{ form.submit(class="btn btn-primary btn-extract") }}
+        </div>
+    </form>
+</div>
+
+<h3 class="mt-4" style="color: rgb(14, 15, 15); text-align: center;"><u>Uploaded Images</u></h3>
+<div class="row">
+    {% for image in user_images %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <img src="{{ url_for('static', filename='uploads/' + image.filename) }}" class="card-img-top" alt="{{ image.filename }}">
+                <div class="card-body">
+                    <p class="card-text">{{ image.filename }}</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form method="POST" action="{{ url_for('gallery') }}">
+                                {{ image_form.csrf_token }}
+                                {{ image_form.image_name(class="form-control", type="hidden", value=image.id) }}
+                                {{ image_form.submit(class="btn btn-primary btn-extract") }}
+                            </form>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <a href="#" class="btn btn-danger custom-btn mt-2" data-bs-toggle="modal" data-bs-target="#deleteImageModal" data-image-id="{{ image.id }}">Delete</a>
+                        </div>
+
+                        <div class="handwritten-segments">
+                            {% if hand_written_segments and image_name == image.filename %}
+                                <h6 class="title">Extracted Data:</h6>
+                                <textarea id="segments-textarea" class="form-control" rows="10">{{ hand_written_segments }}</textarea>
+                                <button class="btn btn-primary btn-save btn-extract mt-2" onclick="saveSegments()">Save to Text File</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

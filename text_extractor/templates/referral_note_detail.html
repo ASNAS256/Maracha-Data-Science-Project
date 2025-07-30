@@ -1,0 +1,37 @@
+{% extends "ehr.html" %}
+
+{% block title %}Referral Note Detail{% endblock %}
+
+{% block content %}
+<h1 class="my-4">Referral Note Detail</h1>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Referral Note for {{ report.reference_patient_name }}</h5>
+        <p class="card-text"><strong>Date of Referral:</strong> {{ report.date_of_referral }}</p>
+        <p class="card-text"><strong>To:</strong> {{ report.to }}</p>
+        <p class="card-text"><strong>From Health Unit:</strong> {{ report.from_health_unit }}</p>
+        <p class="card-text"><strong>Referral Number:</strong> {{ report.referral_number }}</p>
+        <p class="card-text"><strong>Patient Name:</strong> {{ report.reference_patient_name }}</p>
+        <p class="card-text"><strong>Patient Number:</strong> {{ report.patient_number }}</p>
+        <p class="card-text"><strong>Age:</strong> {{ report.age }}</p>
+        <p class="card-text"><strong>Sex:</strong> {{ report.sex }}</p>
+        <p class="card-text"><strong>Date of First Visit:</strong> {{ report.date_of_first_visit }}</p>
+        <p class="card-text"><strong>History and Symptoms:</strong> {{ report.history_and_symptoms }}</p>
+        <p class="card-text"><strong>Investigations Done:</strong> {{ report.investigations_done }}</p>
+        <p class="card-text"><strong>Diagnosis:</strong> {{ report.diagnosis }}</p>
+        <p class="card-text"><strong>Treatment Given:</strong> {{ report.treatment_given }}</p>
+        <p class="card-text"><strong>Reason for Referral:</strong> {{ report.reason_for_referral }}</p>
+        <p class="card-text"><strong>Clinician Name:</strong> {{ report.clinician_name }}</p>
+        <p class="card-text"><strong>Clinician Contact:</strong> {{ report.clinician_contact }}</p>
+        <p class="card-text"><strong>Date of Arrival:</strong> {{ report.date_of_arrival }}</p>
+        <p class="card-text"><strong>Date of Discharge:</strong> {{ report.date_of_discharge }}</p>
+        <p class="card-text"><strong>Further Investigations Done:</strong> {{ report.further_investigations_done }}</p>
+        <p class="card-text"><strong>Further Diagnosis:</strong> {{ report.further_diagnosis }}</p>
+        <p class="card-text"><strong>Further Treatments Given:</strong> {{ report.further_treatments_given }}</p>
+        <p class="card-text"><strong>Treatment or Surveillance to be Continued:</strong> {{ report.treatment_or_surveillance }}</p>
+        <p class="card-text"><strong>Remarks:</strong> {{ report.remarks }}</p>
+        <p class="card-text"><strong>Further Clinician Name:</strong> {{ report.further_clinician_name }}</p>
+        <p class="card-text"><strong>Further Clinician Contact:</strong> {{ report.further_clinician_contact }}</p>
+    </div>
+</div>
+{% endblock %}

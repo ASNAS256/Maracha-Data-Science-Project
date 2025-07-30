@@ -1,0 +1,112 @@
+{% extends "ehr.html" %}
+
+{% block title %}Referral Note{% endblock %}
+
+{% block content %}
+<h1 class="my-4">Referral Note</h1>
+<form method="post">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+        {{ form.date_of_referral.label(class="form-label") }}
+        {{ form.date_of_referral(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.to.label(class="form-label") }}
+        {{ form.to(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.from_health_unit.label(class="form-label") }}
+        {{ form.from_health_unit(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.referral_number.label(class="form-label") }}
+        {{ form.referral_number(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.reference_patient_name.label(class="form-label") }}
+        {{ form.reference_patient_name(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.patient_number.label(class="form-label") }}
+        {{ form.patient_number(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.age.label(class="form-label") }}
+        {{ form.age(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.sex.label(class="form-label") }}
+        {{ form.sex(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.date_of_first_visit.label(class="form-label") }}
+        {{ form.date_of_first_visit(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.history_and_symptoms.label(class="form-label") }}
+        {{ form.history_and_symptoms(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.investigations_done.label(class="form-label") }}
+        {{ form.investigations_done(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.diagnosis.label(class="form-label") }}
+        {{ form.diagnosis(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.treatment_given.label(class="form-label") }}
+        {{ form.treatment_given(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.reason_for_referral.label(class="form-label") }}
+        {{ form.reason_for_referral(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.clinician_name.label(class="form-label") }}
+        {{ form.clinician_name(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.clinician_contact.label(class="form-label") }}
+        {{ form.clinician_contact(class="form-control") }}
+    </div>
+    <!-- Additional fields for referral site -->
+    <div class="mb-3">
+        {{ form.date_of_arrival.label(class="form-label") }}
+        {{ form.date_of_arrival(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.date_of_discharge.label(class="form-label") }}
+        {{ form.date_of_discharge(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.further_investigations_done.label(class="form-label") }}
+        {{ form.further_investigations_done(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.further_diagnosis.label(class="form-label") }}
+        {{ form.further_diagnosis(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.further_treatments_given.label(class="form-label") }}
+        {{ form.further_treatments_given(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.treatment_or_surveillance.label(class="form-label") }}
+        {{ form.treatment_or_surveillance(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.remarks.label(class="form-label") }}
+        {{ form.remarks(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.further_clinician_name.label(class="form-label") }}
+        {{ form.further_clinician_name(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.further_clinician_contact.label(class="form-label") }}
+        {{ form.further_clinician_contact(class="form-control") }}
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
